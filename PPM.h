@@ -9,25 +9,23 @@ using namespace std;
 class PPM {
 public:
     static string readData(const string& fileReadingImage) {
-        string readInformation;
+        string data;
         ifstream inFile(fileReadingImage);
-        if (!inFile.is_open())
+        if (!inFile) // checking presence
             cout << "An error occurred. Could not open the file.";
         else
-            while (getline(inFile, readInformation, ';'));
-
+            while (getline(inFile, data, ';')); // reading all lines and "save" them in string data
         inFile.close();
-        return readInformation;
+        return data;
     }
 
     static void writeData(const string& dataOfImage, const string& fileWritingImage) {
         ofstream outFile;
         outFile.open(fileWritingImage,ios::out);
-        if (!outFile)
+        if (!outFile) // checking presence
             cout << "An error occurred. Could not open the file.";
         else
-            outFile << dataOfImage << flush;
-
+            outFile << dataOfImage << flush; // free up buffer after the data of the image is written down
         outFile.close();
     }
 };
