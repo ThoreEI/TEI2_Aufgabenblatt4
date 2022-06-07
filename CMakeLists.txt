@@ -3,4 +3,4 @@ project(TEI2_Aufgabenblatt4)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(TEI2_Aufgabenblatt4 main.cpp PPM.h)
+add_executable(TEI2_Aufgabenblatt4 main.cpp PPM.h ImageProcessing.h)
