@@ -1,8 +1,7 @@
 #include <iostream>
+#include <sstream>
 #include "fstream"
 #include "string"
-#include <stdlib.h>
-#include <string.h>
 using namespace std;
 
 #ifndef TEI2_AUFGABENBLATT4_IMAGEPROCESSING_H
@@ -10,14 +9,14 @@ using namespace std;
 
 class ImageProcessing {
 public:
-    ImageProcessing()= default;
+    ImageProcessing() = default;
 
     struct Header {
-        char type[2]; //type of the given map (P1, P2, P3)
+        string type; //type of the given map (P1, P2, P3)
         int width;
         int height;  //information about the given map-image
         int brightness;
-    };
+    } header;
 
     struct RGB {
         int red;
@@ -26,31 +25,43 @@ public:
     };
 
     void convertToGray(const char *filename) {
-
-        // read header
+        // check the presence of the file
         FILE * file = nullptr;
-        file =  fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//smileyToRead.txt", "r");
+        file = fopen(filename, "r");
         if (file == nullptr) {
-            cout << "An error occurred.";
+            cout << "An error occurred by trying to open the file";
             return;
         }
+        // read the file
+        string dataOfImage = PPM::readData(filename); // whole ppm saved in a string
 
-        char header[3];
-        fscanf(file, "%s", header);
-        char information[3];
-        fscanf(file, "%d", information);
-        cout << header[0] << header[1]  << endl;
+        /*
+         * 1. search for comments
+         * 2. ignore the rest of the line
+         * 3. find the first char of the following line
+         * 4. continue till all three headlines are read
+         */
+        char commentIdentifier = '#';
+        size_t beginOfComment = dataOfImage.find(commentIdentifier);
+        string firstHeadLine = dataOfImage.substr(0, beginOfComment);
+        cout << firstHeadLine << endl;
+        header.type = firstHeadLine; // 1st information found
 
-        cout << (int) information[0] << (int) information[1];
+        char nextLineIdentifier = '\n';
+        size_t endOfComment = dataOfImage.find(nextLineIdentifier); // found the end of the current line
+        int firstCharNextLine = (int) ( endOfComment + 1 );
 
-        FILE *file2;
-        file2 = fopen("test2.ppm", "w");
+        beginOfComment = dataOfImage.find(commentIdentifier);
+        cout << beginOfComment << endl;
+        string secondHeadline = dataOfImage.substr(firstCharNextLine, beginOfComment);
+        cout << secondHeadline << endl;
+
     }
 
     void edgeDetection() {
-        double filter[3][3] = {{-1, -1,-1},  // Faltung eines Graustufenbildes  kantengefiltertes Bild erzeugt
-                               {-1, 8, -1},
-                               {-1, 1, -1} };
+        double filter[3][3] = {{-1, -1, -1},  // Faltung eines Graustufenbildes  kantengefiltertes Bild erzeugt
+                               {-1, 8,  -1},
+                               {-1, 1,  -1}};
     }
 };
 

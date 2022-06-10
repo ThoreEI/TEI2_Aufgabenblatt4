@@ -9,14 +9,15 @@ using namespace std;
 class PPM {
 public:
     static string readData(const string& fileReadingImage) {
-        string data;
+
+        string readData;
         ifstream inFile(fileReadingImage);
-        if (!inFile) // checking presence
-            cout << "An error occurred. Could not open the file.";
+        if (!inFile)    // checking presence
+            cout << "An error occurred by trying to open the file";
         else
-            while (getline(inFile, data, ';')); // reading all lines and "save" them in string data
+            while (getline(inFile, readData, ';'));  // reading all lines and "save" them in string data
         inFile.close();
-        return data;
+        return readData;
     }
 
     static void writeData(const string& dataOfImage, const string& fileWritingImage) {
