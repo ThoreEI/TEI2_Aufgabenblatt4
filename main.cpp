@@ -1,10 +1,9 @@
 #include "PPM.h"
 #include "ImageProcessing.h"
-#include <libgen.h>
 using std::cout; using std::cin;
 using std::endl; using std::string;
 
-int main(int argc, char* argv[])
+int main()
 {
     /*
      * Aufgabe 1

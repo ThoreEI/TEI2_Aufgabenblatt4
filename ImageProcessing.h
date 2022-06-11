@@ -26,7 +26,8 @@ public:
 
     void convertToGray(FILE * coloredPpmImage, FILE * grayedOutPpmImage) {
         // check the presence of the file
-        if (coloredPpmImage == nullptr) {
+        if (coloredPpmImage == nullptr)
+        {
             cout << "An error occurred by trying to open the file";
             return;
         }
@@ -41,7 +42,8 @@ public:
 
         // read the body
         int numberOfPixel = header.width * header.height;
-        for (int countOfPixel = 0; countOfPixel < numberOfPixel; countOfPixel++) {
+        for (int countOfPixel = 0; countOfPixel < numberOfPixel; countOfPixel++)
+        {
             fscanf(coloredPpmImage, "%d %d %d", &pixel.red, &pixel.green, &pixel.blue); //saving the read pixel information
             int grayedOutPixel = (pixel.red + pixel.green + pixel.green) / 3; // computing the gray pixel value
             // write the body
