@@ -11,17 +11,17 @@ int main(int argc, char* argv[])
      */
 
     // reading part
-    string fileReadingImage ="C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//smileyToRead.txt";
-    string dataOfImage = PPM::readData(fileReadingImage);
-
+    string filenameOfPpm = "C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//smileyToRead.txt";
+    string dataOfImage = PPM::readData(filenameOfPpm);
     // writing part
-    string fileWritingImage = "C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//writtenSmiley.ppm";
-    PPM::writeData(dataOfImage, fileWritingImage);
+     string filenameOfNewPpm = "C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//writtenSmiley.ppm";
+    PPM::writeData(dataOfImage, filenameOfNewPpm);
 
     /*
      * Aufgabe 2
      */
+    const char * filenameOfGrayedOutPpm = "C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//smileyToRead.txt";
     auto * imageProcessing = new ImageProcessing();
-    imageProcessing->convertToGray("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//smileyToRead.txt");
+    imageProcessing->convertToGray(filenameOfGrayedOutPpm);
     return 0;
 }

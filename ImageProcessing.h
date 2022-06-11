@@ -12,7 +12,7 @@ public:
     ImageProcessing() = default;
 
     struct Header {
-        string type; //type of the given map (P1, P2, P3)
+        char type[2]; //type of the given map (P1, P2, P3)
         int width;
         int height;  //information about the given map-image
         int brightness;
@@ -22,41 +22,22 @@ public:
         int red;
         int green;
         int blue;
-    };
+    } rgbPixel;
 
     void convertToGray(const char *filename) {
         // check the presence of the file
-        FILE * file = nullptr;
-        file = fopen(filename, "r");
-        if (file == nullptr) {
+        FILE * ppmImage = nullptr;
+        ppmImage = fopen(filename, "r");
+        if (ppmImage == nullptr) {
             cout << "An error occurred by trying to open the file";
             return;
         }
-        // read the file
-        string dataOfImage = PPM::readData(filename); // whole ppm saved in a string
-
-        /*
-         * 1. search for comments
-         * 2. ignore the rest of the line
-         * 3. find the first char of the following line
-         * 4. continue till all three headlines are read
-         */
-        char commentIdentifier = '#';
-        size_t beginOfComment = dataOfImage.find(commentIdentifier);
-        string firstHeadLine = dataOfImage.substr(0, beginOfComment);
-        cout << firstHeadLine << endl;
-        header.type = firstHeadLine; // 1st information found
-
-        char nextLineIdentifier = '\n';
-        size_t endOfComment = dataOfImage.find(nextLineIdentifier); // found the end of the current line
-        int firstCharNextLine = (int) ( endOfComment + 1 );
-
-        beginOfComment = dataOfImage.find(commentIdentifier);
-        cout << beginOfComment << endl;
-        string secondHeadline = dataOfImage.substr(firstCharNextLine, beginOfComment);
-        cout << secondHeadline << endl;
+        // read the header
+        fscanf(ppmImage, "%s", header.type);
+        fscanf(ppmImage, "%d %d %d", &header.width, &header.height, &header.brightness);
 
     }
+
 
     void edgeDetection() {
         double filter[3][3] = {{-1, -1, -1},  // Faltung eines Graustufenbildes  kantengefiltertes Bild erzeugt

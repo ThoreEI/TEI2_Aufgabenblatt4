@@ -1,6 +1,6 @@
-P3 #Portable Pixmap
-13 9 #Breite des Bildes, Leerstelle, Höhe des Bildes
-9 #Helligkeitswerte bis 9
+P3
+13 9
+9
 0 0 0 0 0 0 0 0 0 9 0 0 9 0 0 9 0 0 9 0 0 9 0 0 9 0 0 9 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 9 0 0 4 0 0 4 0 0 4 0 0 4 0 0 4 0 0 4 0 0 4 0 0 9 0 0 0 0 0 0 0 0
 0 0 0 9 0 0 4 0 0 4 0 0 0 9 0 0 9 0 4 0 0 4 0 9 4 0 9 4 0 0 4 0 0 9 0 0 0 0 0
