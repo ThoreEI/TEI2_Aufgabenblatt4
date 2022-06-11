@@ -11,17 +11,18 @@ int main(int argc, char* argv[])
      */
 
     // reading part
-    string filenameOfPpm = "C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//smileyToRead.txt";
-    string dataOfImage = PPM::readData(filenameOfPpm);
+    string filenameOfPpmImage = "C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//coloredSmiley.ppm";
+    string dataOfImage = PPM::readData(filenameOfPpmImage);
     // writing part
-     string filenameOfNewPpm = "C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//writtenSmiley.ppm";
+     string filenameOfNewPpm = "C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//grayedOutSmiley.ppm";
     PPM::writeData(dataOfImage, filenameOfNewPpm);
 
     /*
      * Aufgabe 2
      */
-    const char * filenameOfGrayedOutPpm = "C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//smileyToRead.txt";
-    auto * imageProcessing = new ImageProcessing();
-    imageProcessing->convertToGray(filenameOfGrayedOutPpm);
+    FILE * coloredPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//coloredSmiley.ppm", "r");
+    FILE * grayedOutPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//grayedOutSmiley.ppm", "w");
+    auto imageProcessing = new ImageProcessing();
+    imageProcessing->convertToGray(coloredPpmImage,grayedOutPpmImage);
     return 0;
 }

@@ -14,7 +14,7 @@ public:
     struct Header {
         char type[2]; //type of the given map (P1, P2, P3)
         int width;
-        int height;  //information about the given map-image
+        int height;
         int brightness;
     } header;
 
@@ -22,22 +22,34 @@ public:
         int red;
         int green;
         int blue;
-    } rgbPixel;
+    } pixel;
 
-    void convertToGray(const char *filename) {
+    void convertToGray(FILE * coloredPpmImage, FILE * grayedOutPpmImage) {
         // check the presence of the file
-        FILE * ppmImage = nullptr;
-        ppmImage = fopen(filename, "r");
-        if (ppmImage == nullptr) {
+        if (coloredPpmImage == nullptr) {
             cout << "An error occurred by trying to open the file";
             return;
         }
         // read the header
-        fscanf(ppmImage, "%s", header.type);
-        fscanf(ppmImage, "%d %d %d", &header.width, &header.height, &header.brightness);
+        fscanf(coloredPpmImage, "%s", header.type);
+        fscanf(coloredPpmImage, "%d %d %d", &header.width, &header.height, &header.brightness);
 
+        //write header
+        fprintf(grayedOutPpmImage, "%s\n", header.type);
+        fprintf(grayedOutPpmImage, "%d %d\n", header.width, header.height);
+        fprintf(grayedOutPpmImage, "%d\n", header.brightness);
+
+        // read the body
+        int numberOfPixel = header.width * header.height;
+        for (int countOfPixel = 0; countOfPixel < numberOfPixel; countOfPixel++) {
+            fscanf(coloredPpmImage, "%d %d %d", &pixel.red, &pixel.green, &pixel.blue); //saving the read pixel information
+            int grayedOutPixel = (pixel.red + pixel.green + pixel.green) / 3; // computing the gray pixel value
+            // write the body
+            if (0 < countOfPixel && countOfPixel % header.width == 0) // writing a new line if the current line ends
+                fprintf (grayedOutPpmImage, "%c", '\n');
+            fprintf(grayedOutPpmImage, "%d %d %d ", grayedOutPixel, grayedOutPixel, grayedOutPixel); // three times R,G,B -> Grey, Grey, Grey
+        }
     }
-
 
     void edgeDetection() {
         double filter[3][3] = {{-1, -1, -1},  // Faltung eines Graustufenbildes  kantengefiltertes Bild erzeugt

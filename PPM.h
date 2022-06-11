@@ -8,9 +8,9 @@ using namespace std;
 
 class PPM {
 public:
-    static string readData(const string& fileReadingImage) {
+    static string readData(const string & fileOfPpmImage) {
         string readData;
-        ifstream inFile(fileReadingImage);
+        ifstream inFile(fileOfPpmImage);
         if (!inFile)    // checking presence
             cout << "An error occurred by trying to open the file";
         else
