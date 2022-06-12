@@ -54,6 +54,22 @@ public:
     }
 
     void edgeDetection() {
+        // pixel mal 8 + außenrum *-1 =
+        FILE * file = fopen("C:/Users/UnknownUser/CLionProjects/TEI2_Aufgabenblatt4/files/test.txt", "r");
+        if (file == nullptr) {
+            cout << "An error occurred. Could not open the file." << endl;
+            return;
+        }
+        int pixelData[header.width*3][header.height];
+
+        for (int countOfPixel = 0; countOfPixel < header.width * 3 * header.height; countOfPixel++) {
+            int currentPixel = 0;
+            fscanf(file, "%d", currentPixel);
+            if (0 < countOfPixel && countOfPixel % (header.width*3) == 0) // writing a new line if the current line ends
+                cout << "\n";
+            cout << currentPixel;
+        }
+
         double filter[3][3] = {{-1, -1, -1},  // Faltung eines Graustufenbildes  kantengefiltertes Bild erzeugt
                                {-1, 8,  -1},
                                {-1, 1,  -1}};

@@ -23,5 +23,6 @@ int main()
     FILE * grayedOutPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//grayedOutSmiley.ppm", "w");
     auto imageProcessing = new ImageProcessing();
     imageProcessing->convertToGray(coloredPpmImage,grayedOutPpmImage);
+    imageProcessing->edgeDetection();
     return 0;
 }
