@@ -19,10 +19,16 @@ int main()
     /*
      * Aufgabe 2
      */
+    // convert to gray
     FILE * coloredPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//coloredSmiley.ppm", "r");
     FILE * grayedOutPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//grayedOutSmiley.ppm", "w");
     auto imageProcessing = new ImageProcessing();
     imageProcessing->convertToGray(coloredPpmImage,grayedOutPpmImage);
-    imageProcessing->edgeDetection();
+
+    //edge filtering
+    //reopening the file --> resetting pointer
+    fclose(coloredPpmImage);
+    coloredPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//coloredSmiley.ppm", "r");
+    imageProcessing->edgeDetection(coloredPpmImage);
     return 0;
 }

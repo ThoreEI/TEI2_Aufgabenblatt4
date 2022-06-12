@@ -51,27 +51,32 @@ public:
                 fprintf (grayedOutPpmImage, "%c", '\n');
             fprintf(grayedOutPpmImage, "%d %d %d ", grayedOutPixel, grayedOutPixel, grayedOutPixel); // three times R,G,B -> Grey, Grey, Grey
         }
+        fclose(coloredPpmImage);
+        fclose(grayedOutPpmImage);
     }
 
-    void edgeDetection() {
-        // pixel mal 8 + außenrum *-1 =
-        FILE * file = fopen("C:/Users/UnknownUser/CLionProjects/TEI2_Aufgabenblatt4/files/test.txt", "r");
-        if (file == nullptr) {
+    void edgeDetection(FILE * coloredPpmImage) {
+        if (coloredPpmImage == nullptr) {
             cout << "An error occurred. Could not open the file." << endl;
             return;
         }
-        int pixelData[header.width*3][header.height];
-        int currentPixel = 1;
-        for (int height = 0; height < header.height; height++) {
+        fscanf(coloredPpmImage, "%s", header.type);
+        fscanf(coloredPpmImage, "%d %d %d", &header.width, &header.height, &header.brightness);
+
+        char pixelData[header.height][header.width*3];
+
+        for (int height = 0; height < header.height; height++)
+        {
             for (int width = 0; width < header.width * 3; width++)
             {
-                fscanf(file, "%d ", &currentPixel);
+                char currentPixel = fgetc(coloredPpmImage);
+                if (isspace(currentPixel) || currentPixel == '\n')
+                    continue;
                 pixelData[height][width] = currentPixel;
+
                 cout << pixelData[height][width] << " ";
             }
         }
-
-
 
         double filter[3][3] = {{-1, -1, -1},  // Faltung eines Graustufenbildes  kantengefiltertes Bild erzeugt
                                {-1, 8,  -1},
