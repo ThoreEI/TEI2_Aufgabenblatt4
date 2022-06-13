@@ -55,15 +55,18 @@ public:
         fclose(grayedOutPpmImage);
     }
 
-    void edgeDetection(FILE * coloredPpmImage) {
-        if (coloredPpmImage == nullptr)
+    void edgeDetection(FILE * grayedOutPpmImage, FILE * edgeFilteredPpmImage) {
+        if (grayedOutPpmImage == nullptr)
         {
             cout << "An error occurred. Could not open the file." << endl;
             return;
         }
 
-        fscanf(coloredPpmImage, "%s", header.type);
-        fscanf(coloredPpmImage, "%d %d %d", &header.width, &header.height, &header.brightness);
+        fscanf(grayedOutPpmImage, "%s", header.type);
+        fscanf(grayedOutPpmImage, "%d %d %d", &header.width, &header.height, &header.brightness);
+        fprintf(edgeFilteredPpmImage, "%s\n", header.type);
+        fprintf(edgeFilteredPpmImage, "%d %d\n", header.width, header.height);
+        fprintf(edgeFilteredPpmImage, "%d\n", header.brightness);
 
         int pixelData[header.height][header.width*3];
         for (int height = 0; height < header.height; height++)
@@ -71,21 +74,44 @@ public:
             for (int width = 0; width < header.width * 3; width++)
             {
                 int currentPixel;
-                fscanf(coloredPpmImage, "%d", &currentPixel);
+                fscanf(grayedOutPpmImage, "%d", &currentPixel);
                 pixelData[height][width] = currentPixel;
             }
         }
 
+
+        int filter[3][3] = {{-1, -1, -1},
+                            {-1, 8,  -1},
+                            {-1, 1,  -1}};
+
         for (int height = 0; height < header.height; height++) {
-            cout << "\n" << endl;
+            if (0 < height)
+                fprintf(edgeFilteredPpmImage, "%c", '\n');
             for (int width = 0; width < header.width * 3; width++)
             {
-               cout << " " << pixelData[height][width];
+                if (pixelData[height][width] > 0
+                    && height > 1
+                    && height < header.height
+                    && width > 0
+                    && width < header.width)
+                {
+                    int currentPixel = pixelData[height][width];
+                    currentPixel *= filter[1][1]; // multiplied by 8
+                    currentPixel += (filter[0][0] * pixelData[height - 1][width - 1]);
+                    currentPixel += (filter[0][1] * pixelData[height - 1][width]);
+                    currentPixel += (filter[0][2] * pixelData[height - 1][width + 1]);
+                    currentPixel += (filter[1][0] * pixelData[height][width - 1]);
+                    currentPixel += (filter[1][2] * pixelData[height][width + 1]);
+                    currentPixel += (filter[2][0] * pixelData[height + 1][width - 1]);
+                    currentPixel += (filter[2][1] * pixelData[height + 1][width]);
+                    currentPixel += (filter[2][2] * pixelData[height - 1][width + 1]);
+                    if (currentPixel > 0 && currentPixel < 10)
+                        pixelData[height][width] = currentPixel;
+
+                }
+                fprintf(edgeFilteredPpmImage, "%d ", pixelData[height][width]);
             }
         }
-        double filter[3][3] = {{-1, -1, -1},  // Faltung eines Graustufenbildes  kantengefiltertes Bild erzeugt
-                               {-1, 8,  -1},
-                               {-1, 1,  -1}};
     }
 };
 

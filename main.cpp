@@ -27,8 +27,9 @@ int main()
 
     //edge filtering
     //reopening the file --> resetting pointer
-    fclose(coloredPpmImage);
-    coloredPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//coloredSmiley.ppm", "r");
-    imageProcessing->edgeDetection(coloredPpmImage);
+    fclose(grayedOutPpmImage);
+    grayedOutPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//grayedOutSmiley.ppm", "r");
+    FILE * edgeFilteredPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//edgeFilteredSmiley.ppm", "w");
+    imageProcessing->edgeDetection(grayedOutPpmImage, edgeFilteredPpmImage);
     return 0;
 }
