@@ -24,8 +24,6 @@ public:
         int blue;
     } pixel;
 
-
-
     void convertToGray(FILE * coloredPpmImage, FILE * grayedOutPpmImage) {
         if (!isFilePresent(coloredPpmImage))
             return;
@@ -95,8 +93,9 @@ public:
                 fprintf(edgeFilteredPpmImage, "%d ", pixelData[height][width]);
             }
         }
+        fclose(grayedOutPpmImage);
+        fclose(edgeFilteredPpmImage);
     }
-
 
     bool isFilePresent(FILE * inputFile) {
         if (inputFile != nullptr)
