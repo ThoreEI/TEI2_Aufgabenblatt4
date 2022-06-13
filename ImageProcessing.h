@@ -56,52 +56,33 @@ public:
     }
 
     void edgeDetection(FILE * coloredPpmImage) {
-        ifstream stream ;
-        stream.open("C:\\Users\\School\\CLionProjects\\TEI2_Aufgabenblatt4\\files\\coloredSmiley.ppm",ios::in);
-        if (coloredPpmImage == nullptr) {
+        if (coloredPpmImage == nullptr)
+        {
             cout << "An error occurred. Could not open the file." << endl;
             return;
         }
-//        fscanf(coloredPpmImage, "%s", header.type);
-//        fscanf(coloredPpmImage, "%d %d %d", &header.width, &header.height, &header.brightness);
-        stream >> header.type;
-        stream >> header.width;
-        stream >> header.height;
-        stream >> header.brightness;
 
-        header.width *= 3;
-        cout << header.width;
-        char pixelData[header.height][header.width];
+        fscanf(coloredPpmImage, "%s", header.type);
+        fscanf(coloredPpmImage, "%d %d %d", &header.width, &header.height, &header.brightness);
 
-        for (int i = 0; i <header.height ; ++i) {
-            for (int j = 0; j < header.width; ++j) {
-                stream >> pixelData[i][j];
-            }
-            pixelData[i][header.width-1] = '\n';
-        }
-        for (int i = 0; i <header.height ; ++i) {
-            for (int j = 0; j < header.width; ++j) {
-                cout << pixelData[i][j]<<" ";
+        int pixelData[header.height][header.width*3];
+        for (int height = 0; height < header.height; height++)
+        {
+            for (int width = 0; width < header.width * 3; width++)
+            {
+                int currentPixel;
+                fscanf(coloredPpmImage, "%d", &currentPixel);
+                pixelData[height][width] = currentPixel;
             }
         }
 
-
-
-
-//        char pixelData[header.height][header.width*3];
-//        for (int height = 0; height < sizeof (pixelData); height++)
-//        {
-//            for (int width = 0; width < sizeof (pixelData[height]); width++)
-//            {
-//                char currentPixel = fgetc(coloredPpmImage);
-//                if (isspace(currentPixel) || currentPixel == '\n')
-//                    continue;
-//                pixelData[height][width] = currentPixel;
-//
-//                cout << pixelData[height][width] << " ";
-//            }
-//        }
-
+        for (int height = 0; height < header.height; height++) {
+            cout << "\n" << endl;
+            for (int width = 0; width < header.width * 3; width++)
+            {
+               cout << " " << pixelData[height][width];
+            }
+        }
         double filter[3][3] = {{-1, -1, -1},  // Faltung eines Graustufenbildes  kantengefiltertes Bild erzeugt
                                {-1, 8,  -1},
                                {-1, 1,  -1}};
