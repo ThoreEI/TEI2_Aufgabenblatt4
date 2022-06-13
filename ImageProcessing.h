@@ -24,23 +24,14 @@ public:
         int blue;
     } pixel;
 
+
+
     void convertToGray(FILE * coloredPpmImage, FILE * grayedOutPpmImage) {
-        // check the presence of the file
-        if (coloredPpmImage == nullptr)
-        {
-            cout << "An error occurred by trying to open the file.";
+        if (!isFilePresent(coloredPpmImage))
             return;
-        }
-        // read the header
-        fscanf(coloredPpmImage, "%s", header.type);
-        fscanf(coloredPpmImage, "%d %d %d", &header.width, &header.height, &header.brightness);
 
-        //write header
-        fprintf(grayedOutPpmImage, "%s\n", header.type);
-        fprintf(grayedOutPpmImage, "%d %d\n", header.width, header.height);
-        fprintf(grayedOutPpmImage, "%d\n", header.brightness);
+        readAndPrintHeaderOfPpmImage(coloredPpmImage, grayedOutPpmImage);
 
-        // read the body
         int numberOfPixel = header.width * header.height;
         for (int countOfPixel = 0; countOfPixel < numberOfPixel; countOfPixel++)
         {
@@ -56,17 +47,10 @@ public:
     }
 
     void edgeDetection(FILE * grayedOutPpmImage, FILE * edgeFilteredPpmImage) {
-        if (grayedOutPpmImage == nullptr)
-        {
-            cout << "An error occurred. Could not open the file." << endl;
+        if (!isFilePresent(grayedOutPpmImage))
             return;
-        }
 
-        fscanf(grayedOutPpmImage, "%s", header.type);
-        fscanf(grayedOutPpmImage, "%d %d %d", &header.width, &header.height, &header.brightness);
-        fprintf(edgeFilteredPpmImage, "%s\n", header.type);
-        fprintf(edgeFilteredPpmImage, "%d %d\n", header.width, header.height);
-        fprintf(edgeFilteredPpmImage, "%d\n", header.brightness);
+        readAndPrintHeaderOfPpmImage(grayedOutPpmImage, edgeFilteredPpmImage);
 
         int pixelData[header.height][header.width*3];
         for (int height = 0; height < header.height; height++)
@@ -78,7 +62,6 @@ public:
                 pixelData[height][width] = currentPixel;
             }
         }
-
 
         int filter[3][3] = {{-1, -1, -1},
                             {-1, 8,  -1},
@@ -112,6 +95,30 @@ public:
                 fprintf(edgeFilteredPpmImage, "%d ", pixelData[height][width]);
             }
         }
+    }
+
+
+    bool isFilePresent(FILE * inputFile) {
+        if (inputFile != nullptr)
+            return true;
+        cout << "An error occurred. Could not open the file.";
+        return false;
+    }
+
+    void readAndPrintHeaderOfPpmImage(FILE * inputFile, FILE * outputFile) {
+        // check the presence of the file
+        if (inputFile == nullptr)
+        {
+            cout << "An error occurred. Could not open the file.";
+            return;
+        }
+        // read the header
+        fscanf(inputFile, "%s", header.type);
+        fscanf(inputFile, "%d %d %d", &header.width, &header.height, &header.brightness);
+        //write header
+        fprintf(outputFile, "%s\n", header.type);
+        fprintf(outputFile, "%d %d\n", header.width, header.height);
+        fprintf(outputFile, "%d\n", header.brightness);
     }
 };
 

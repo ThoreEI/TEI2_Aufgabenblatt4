@@ -19,15 +19,14 @@ int main()
     /*
      * Aufgabe 2
      */
-    // convert to gray
+
+    auto imageProcessing = new ImageProcessing();
+
     FILE * coloredPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//coloredSmiley.ppm", "r");
     FILE * grayedOutPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//grayedOutSmiley.ppm", "w");
-    auto imageProcessing = new ImageProcessing();
     imageProcessing->convertToGray(coloredPpmImage,grayedOutPpmImage);
 
-    //edge filtering
-    //reopening the file --> resetting pointer
-    fclose(grayedOutPpmImage);
+    //reopening the file --> resetting pointer & changing mode
     grayedOutPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//grayedOutSmiley.ppm", "r");
     FILE * edgeFilteredPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//edgeFilteredSmiley.ppm", "w");
     imageProcessing->edgeDetection(grayedOutPpmImage, edgeFilteredPpmImage);

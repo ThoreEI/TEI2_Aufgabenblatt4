@@ -12,7 +12,7 @@ public:
         string readData;
         ifstream inFile(fileOfPpmImage);
         if (!inFile)    // checking presence
-            cout << "An error occurred by trying to open the file";
+            cout << "An error occurred. Could not open the file.";
         else
             while (getline(inFile, readData, ';')); // reading all lines and "save" them in string data
                 inFile.close();
