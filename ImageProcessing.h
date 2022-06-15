@@ -24,6 +24,11 @@ public:
         int blue;
     } pixel;
 
+    const int filter[3][3] = {{-1, -1, -1},
+                              {-1, 8,  -1},
+                              {-1, -1, -1},
+    };
+
     void convertToGray(FILE * coloredPpmImage, FILE * grayedOutPpmImage) {
         if (!isFilePresent(coloredPpmImage))
             return;
@@ -60,31 +65,17 @@ public:
             }
         }
 
-        for (int height = 0; height < header.height; height++)
-        {
+        for (int height = 0; height < header.height; height++) {
             if (0 < height)
                 fprintf(edgeFilteredPpmImage, "%c", '\n');
-            for (int width = 0; width < header.width; width++)
-            {
+            for (int width = 0; width < header.width; width++) {
 
                 int currentPixel = pixelData[height][width];
 
-                if (currentPixel > 0 && width > 0 && width < header.width && height > 0 && height < header.height) {
-
-                    int up = height - 1;
-                    int down = height + 1;
-                    int left = width - 1;
-                    int right = width + 1;
-
-                    currentPixel *= 8;
-                    currentPixel += (pixelData[up][left] * -1 + pixelData[up][width] *-1 + pixelData[up][right] * -1 + pixelData[height][left] *-1
-                                     + pixelData[height][right] *-1 + pixelData[down][left] * -1 + pixelData[down][width] *-1 + pixelData[down][right] *-1);
-                    if (currentPixel < 0)
-                        currentPixel = 0;
-
+                if (!(currentPixel > 0 && width > 0 && width < header.width && height > 0 && height < header.height)) {
+                    // special cases
 
                     /*
-
                          int calculationValues[9];
                     for (int i = 0; i < sizeof(calculationValues) / sizeof(calculationValues[0]); i++) {
                         calculationValues[i] = 0;
@@ -144,20 +135,34 @@ public:
                         newPixelValue = 0;
                     fprintf(edgeFilteredPpmImage, "%d ", (newPixelValue / 9));
                     */
-
-                    fprintf(edgeFilteredPpmImage, "%d ", currentPixel);
+                    fprintf(edgeFilteredPpmImage, "%d", currentPixel);
                 } else {
-                    fprintf(edgeFilteredPpmImage,"%d ", currentPixel);
+                    int up = height - 1;
+                    int down = height + 1;
+                    int left = width - 1;
+                    int right = width + 1;
+
+                    currentPixel *= filter[1][1];
+                    currentPixel += pixelData[up][left] * filter[0][0]
+                                    + pixelData[up][width] * filter[0][1]
+                                    + pixelData[up][right] * filter[0][2]
+                                    + pixelData[height][left] * filter[1][0]
+                                    + pixelData[height][right] * filter[1][2]
+                                    + pixelData[down][left] * filter[2][0]
+                                    + pixelData[down][width] * filter[2][1]
+                                    + pixelData[down][right] * filter[2][2];
+
+                    if (currentPixel < 0)
+                        currentPixel = 0;
+                    fprintf(edgeFilteredPpmImage, "%d ", currentPixel * 9);
                 }
-
-
             }
         }
         fclose(grayedOutPpmImage);
         fclose(edgeFilteredPpmImage);
     }
 
-    bool isFilePresent(FILE * inputFile) {
+    static bool isFilePresent(FILE * inputFile) {
         if (inputFile != nullptr)
             return true;
         cout << "An error occurred. Could not open the file.";
