@@ -24,6 +24,7 @@ int main()
 
     auto imageProcessing = new ImageProcessing();
 
+
     FILE * coloredPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//coloredPicture.ppm", "r");
     //FILE * coloredPpmImage = fopen("/home/user/CLionProjects/TEI2_Aufgabenblatt4/files/coloredSmiley.ppm", "r");
     FILE * grayedOutPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//grayedOutPicture.ppm", "w");
