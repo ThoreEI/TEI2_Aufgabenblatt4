@@ -76,7 +76,6 @@ public:
                     int left = width - 1;
                     int right = width + 1;
 
-
                     currentPixel *= 8;
                     currentPixel += (pixelData[up][left] * -1 + pixelData[up][width] *-1 + pixelData[up][right] * -1 + pixelData[height][left] *-1
                                      + pixelData[height][right] *-1 + pixelData[down][left] * -1 + pixelData[down][width] *-1 + pixelData[down][right] *-1);
