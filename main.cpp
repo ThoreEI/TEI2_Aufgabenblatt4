@@ -8,7 +8,6 @@ int main()
     /*
      * Aufgabe 1
      */
-
     // reading part
     string filenameOfPpmImage = "C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//coloredPicture.ppm";
     //string filenameOfPpmImage = "/home/user/CLionProjects/TEI2_Aufgabenblatt4/files/coloredSmiley.ppm";

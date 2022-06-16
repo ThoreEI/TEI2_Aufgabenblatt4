@@ -136,6 +136,7 @@ public:
                     fprintf(edgeFilteredPpmImage, "%d ", (newPixelValue / 9));
                     */
                     fprintf(edgeFilteredPpmImage, "%d", currentPixel);
+
                 } else {
                     int up = height - 1;
                     int down = height + 1;

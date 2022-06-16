@@ -2,7 +2,6 @@
 #include "fstream"
 #include "string"
 using namespace std;
-
 #ifndef TEI2_AUFGABENBLATT4_PPM_H
 #define TEI2_AUFGABENBLATT4_PPM_H
 
