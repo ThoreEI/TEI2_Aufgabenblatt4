@@ -74,7 +74,6 @@ public:
                 int currentPixel = pixelData[height][width];
 
                 if (currentPixel > 0 && width > 0 && width < header.width-1 && height > 0 && height < header.height-1) {
-
                     int up = height - 1;
                     int down = height + 1;
                     int left = width - 1;

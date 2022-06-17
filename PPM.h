@@ -6,6 +6,7 @@ using namespace std;
 #define TEI2_AUFGABENBLATT4_PPM_H
 
 class PPM {
+
 public:
     static string readData(const string & fileOfPpmImage) {
         string readData;
