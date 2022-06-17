@@ -79,7 +79,6 @@ public:
                     int down = height + 1;
                     int left = width - 1;
                     int right = width + 1;
-
                     currentPixel *= filter[1][1];
                     currentPixel += (pixelData[up][left] * filter[0][0] + pixelData[up][width] * filter[0][1] + pixelData[up][right] * filter[0][2] + pixelData[height][left] * filter[1][0]
                                      + pixelData[height][right] *filter[1][2] + pixelData[down][left] * filter[2][0] + pixelData[down][width] *filter[2][1] + pixelData[down][right] *filter[2][2]);
