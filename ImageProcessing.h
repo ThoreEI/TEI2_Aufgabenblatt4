@@ -155,7 +155,7 @@ public:
 
                     if (currentPixel < 0)
                         currentPixel = 0;
-                    fprintf(edgeFilteredPpmImage, "%d ", currentPixel * 9);
+                    fprintf(edgeFilteredPpmImage, "%d ", currentPixel*9);
                 }
             }
         }
