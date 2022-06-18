@@ -11,7 +11,7 @@ public:
         string readData;
         ifstream inFile(fileOfPpmImage);
         if (!inFile)    // checking presence
-            cout << "An error occurred. Could not open the file.";
+            cout << "An error occurred. Could not open the file." << endl;
         else
             while (getline(inFile, readData, ';')); // reading all lines and "save" them in string data
                 inFile.close();
@@ -22,7 +22,7 @@ public:
         ofstream outFile;
         outFile.open(fileOfNewPpmImage,ios::out);
         if (!outFile) // checking presence
-            cout << "An error occurred. Could not open the file.";
+            cout << "An error occurred. Could not open the file." << endl;
         else
             outFile << fileOfPpmImage << flush; // free up buffer after the data of the image is written down
         outFile.close();
