@@ -11,7 +11,7 @@ public:
     ImageProcessing() = default;
 
     const int  filter[3][3] = {{-1,-1,-1},
-                         {-1,8-1},
+                         {-1,8,-1},
                          {-1,-1,-1}};
 
     struct Header {
@@ -76,7 +76,8 @@ public:
                 int right = width + 1;
 
                 // using the filter only if it's not a pixel at the edge
-                if (currentPixel > 0 && width > 0 && width < header.width-1 && height > 0 && height < header.height-1) {
+                if (currentPixel > 0 && width > 0 && width < header.width-1 && height > 0 && height < header.height-1)
+                {
                     currentPixel *= filter[1][1];
                     currentPixel += (pixelData[up][left] * filter[0][0]
                             + pixelData[up][width] * filter[0][1]
@@ -97,14 +98,16 @@ public:
         fclose(edgeFilteredPpmImage);
     }
 
-    static bool isFilePresent(FILE * inputFile) {
+    static bool isFilePresent(FILE * inputFile)
+    {
         if (inputFile != nullptr)
             return true;
         cout << "An error occurred. Could not open the file." << endl;
         return false;
     }
 
-    void readAndPrintHeaderOfPpmImage(FILE * inputFile, FILE * outputFile) {
+    void readAndPrintHeaderOfPpmImage(FILE * inputFile, FILE * outputFile)
+    {
         // read the header
         fscanf(inputFile, "%s", header.type);
         fscanf(inputFile, "%d %d %d", &header.width, &header.height, &header.brightness);

@@ -13,7 +13,7 @@ public:
         if (!inFile)    // checking presence
             cout << "An error occurred. Could not open the file." << endl;
         else
-            while (getline(inFile, readData, ';')); // reading all lines and "save" them in string data
+            while (getline(inFile, readData, ';')); // reading all lines and save them in a string
                 inFile.close();
         return readData;
     }

@@ -1,31 +1,48 @@
 #include "PPM.h"
 #include "ImageProcessing.h"
+#include "direct.h"
 using std::cout; using std::cin;
 using std::endl; using std::string;
 
+char pathOfProgram[256];
+char locationOfColoredPicture[256];
+char locationOfGrayedOutPicture[256];
+char locationOfEdgeFilteredImage[256];
+
+void getTheAbsolutePathOfTheImages();
+
 int main()
 {
+    getTheAbsolutePathOfTheImages();
     /*
      * Aufgabe 1
      */
     // reading part
-    string filenameOfPpmImage = "C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//coloredPicture.ppm";   // How can I get the path to the project?
-    string dataOfImage = PPM::readData(filenameOfPpmImage);
+    string dataOfImage = PPM::readData(locationOfColoredPicture);
     // writing part
-    string filenameOfNewPpm = "C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//grayedOutPicture.ppm";
-    PPM::writeData(dataOfImage, filenameOfNewPpm);
+    PPM::writeData(dataOfImage, locationOfColoredPicture);
     /*
      * Aufgabe 2
      */
     auto imageProcessing = new ImageProcessing();
-    FILE * coloredPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//coloredPicture.ppm", "r");
-    FILE * grayedOutPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//grayedOutPicture.ppm", "w");
+    FILE * coloredPpmImage = fopen(locationOfColoredPicture, "r");
+    FILE * grayedOutPpmImage = fopen(locationOfGrayedOutPicture, "w");
     imageProcessing->convertToGray(coloredPpmImage,grayedOutPpmImage);
 
     //reopening the file --> resetting pointer & changing mode
-    grayedOutPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//grayedOutPicture.ppm", "r");
+    grayedOutPpmImage = fopen(locationOfGrayedOutPicture, "r");
 
-    FILE * edgeFilteredPpmImage = fopen("C://Users//UnknownUser//CLionProjects//TEI2_Aufgabenblatt4//files//edgeFilteredPicture.ppm", "w");
+    FILE * edgeFilteredPpmImage = fopen(locationOfEdgeFilteredImage, "w");
     imageProcessing->edgeDetection(grayedOutPpmImage, edgeFilteredPpmImage);
     return 0;
+}
+
+void getTheAbsolutePathOfTheImages() {
+    getcwd( pathOfProgram, 256); // getting the path to the program
+    strcpy(locationOfColoredPicture, pathOfProgram); //copy them
+    strcpy(locationOfGrayedOutPicture, pathOfProgram);
+    strcpy(locationOfEdgeFilteredImage, pathOfProgram);
+    strcat(locationOfColoredPicture, "\\files\\coloredPicture.ppm"); // concatenate the specific filename
+    strcat(locationOfGrayedOutPicture, "\\files\\grayedOutPicture.ppm");
+    strcat(locationOfEdgeFilteredImage, "\\files\\edgeFilteredPicture.ppm");
 }
