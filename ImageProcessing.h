@@ -11,8 +11,8 @@ public:
     ImageProcessing() = default;
 
     const int  filter[3][3] = {{-1,-1,-1},
-                         {-1,8,-1},
-                         {-1,-1,-1}};
+                               {-1,8,-1},
+                               {-1,-1,-1}};
 
     struct Header {
         char type[2]; //type of the given map (P1, P2, P3)
@@ -47,6 +47,8 @@ public:
         fclose(grayedOutPpmImage);
     }
 
+
+
     void edgeDetection(FILE * grayedOutPpmImage, FILE * edgeFilteredPpmImage) {
         if (!isFilePresent(grayedOutPpmImage))
             return;
@@ -55,8 +57,10 @@ public:
 
         // fill 2D Array with read body-information
         int pixelData[header.height][header.width];
-        for (int height = 0; height < header.height; height++) {
-            for (int width = 0; width < header.width; width++) {
+        for (int height = 0; height < header.height; height++)
+        {
+            for (int width = 0; width < header.width; width++)
+            {
                 int currentPixel;
                 fscanf(grayedOutPpmImage, "%d", &currentPixel);
                 pixelData[height][width] = currentPixel;
@@ -66,37 +70,50 @@ public:
         for (int height = 0; height < header.height; height++)
         {
             if (0 < height)
-                fprintf(edgeFilteredPpmImage, "%c", '\n');
+                fprintf(edgeFilteredPpmImage, "%c", '\n'); //end of line --> printing a new line
             for (int width = 0; width < header.width; width++)
             {
+                // computing the respective current index
                 int currentPixel = pixelData[height][width];
                 int up = height - 1;
                 int down = height + 1;
                 int left = width - 1;
                 int right = width + 1;
 
-                // using the filter only if it's not a pixel at the edge
-                if (currentPixel > 0 && width > 0 && width < header.width-1 && height > 0 && height < header.height-1)
-                {
-                    currentPixel *= filter[1][1];
-                    currentPixel += (pixelData[up][left] * filter[0][0]
-                            + pixelData[up][width] * filter[0][1]
-                            + pixelData[up][right] * filter[0][2]
-                            + pixelData[height][left] * filter[1][0]
-                            + pixelData[height][right] *filter[1][2]
-                            + pixelData[down][left] * filter[2][0]
-                            + pixelData[down][width] *filter[2][1]
-                            + pixelData[down][right] *filter[2][2]);
+                currentPixel *= filter[1][1]; // multiply by the factor 8
 
-                    if (currentPixel < 0)
-                        currentPixel = 0;
+                // subtract all existing pixels around currentPixel
+                if (up > 0)
+                {
+                    currentPixel += pixelData[up][width] * filter[0][1];
+                    if (left > 0)
+                        currentPixel += pixelData[up][left] * filter[0][0];
+                    if (right < header.width)
+                        currentPixel += pixelData[up][right] * filter[0][2];
                 }
-                fprintf(edgeFilteredPpmImage, "%d ", currentPixel);
+                if (left > 0)
+                    currentPixel += pixelData[height][left] * filter[1][0];
+                if (right < header.width)
+                    currentPixel += pixelData[height][right] * filter[1][2];
+                if (down < header.height)
+                {
+                    currentPixel += pixelData[down][width] * filter[2][1];
+                    if (left > 0)
+                        currentPixel += pixelData[down][left] * filter[2][0];
+                    if (right < header.width)
+                        currentPixel += pixelData[down][right] * filter[2][2];
+                }
+
+                if (currentPixel < 0) // no negative values allowed
+                    currentPixel = 0;
+
+                fprintf(edgeFilteredPpmImage, "%d ", currentPixel); // write down the edited pixel
             }
         }
         fclose(grayedOutPpmImage);
         fclose(edgeFilteredPpmImage);
     }
+
 
     static bool isFilePresent(FILE * inputFile)
     {
@@ -106,8 +123,7 @@ public:
         return false;
     }
 
-    void readAndPrintHeaderOfPpmImage(FILE * inputFile, FILE * outputFile)
-    {
+    void readAndPrintHeaderOfPpmImage(FILE * inputFile, FILE * outputFile) {
         // read the header
         fscanf(inputFile, "%s", header.type);
         fscanf(inputFile, "%d %d %d", &header.width, &header.height, &header.brightness);
